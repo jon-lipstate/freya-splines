@@ -1,0 +1,26 @@
+{
+    "workbench.colorTheme": "Ayu Mirage Bordered",
+    "filewatcher.commands": [
+        // ${workspaceRoot}: case insensitive workspace root folder
+        // ${file}: path of saved file
+        // ${fileBasename}: saved file's basename
+        // ${fileDirname}: directory name of saved file
+        // ${fileExtname}: extension (including .) of saved file
+        // ${fileBasenameNoExt}: saved file's basename without extension
+        {
+            "match": "\\handmade",
+            "cmd": "${workspaceRoot}\\build_handmade.bat",
+            "event": "onFileChange"
+        },
+        {
+            "match": "\\common",
+            "cmd": "${workspaceRoot}\\build.bat",
+            "event": "onFileChange"
+        },
+        {
+            "match": "\\platform",
+            "cmd": "${workspaceRoot}\\build.bat",
+            "event": "onFileChange"
+        },
+    ]
+}
