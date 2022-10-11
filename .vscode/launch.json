@@ -5,13 +5,10 @@
             "type": "lldb",
             "request": "launch",
             "name": "Debug",
-            "program": "${workspaceFolder}/handmade.exe",
+            "program": "${workspaceFolder}/freya.exe",
             "args": [],
-            "preLaunchTask": "build_platform_common_debug",
-            "env": {
-                "HANMADE_INTERNAL": "1",
-                "HANMADE_SLOW": "1"
-            },
+            "preLaunchTask": "build_debug",
+            "env": {},
             "cwd": "${workspaceFolder}"
         }
     ]

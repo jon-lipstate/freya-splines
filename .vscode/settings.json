@@ -8,17 +8,7 @@
         // ${fileExtname}: extension (including .) of saved file
         // ${fileBasenameNoExt}: saved file's basename without extension
         {
-            "match": "\\handmade",
-            "cmd": "${workspaceRoot}\\build_handmade.bat",
-            "event": "onFileChange"
-        },
-        {
-            "match": "\\common",
-            "cmd": "${workspaceRoot}\\build.bat",
-            "event": "onFileChange"
-        },
-        {
-            "match": "\\platform",
+            "match": "\\odin",
             "cmd": "${workspaceRoot}\\build.bat",
             "event": "onFileChange"
         },
