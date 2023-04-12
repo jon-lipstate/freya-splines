@@ -10,7 +10,7 @@ lerp :: la.lerp
 lerp_inv :: la.unlerp
 /////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-Vector2 :: la.Vector2f32
+Vector2 :: [2]f32
 v2_lerp :: proc(a: Vector2, b: Vector2, t: f32) -> Vector2 {
 	result: Vector2 = {}
 	result.x = la.lerp(a.x, b.x, t)

@@ -9,7 +9,7 @@ lerp :: la.lerp
 lerp_inv :: la.unlerp
 /////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-Vector2 :: la.Vector2f32
+Vector2 :: [2]f32
 
 /////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 BSpline_2D :: struct {
@@ -109,7 +109,7 @@ is_open :: proc(spline: ^BSpline_2D) -> bool {
 		if spline.knots[i] != spline.knots[i + 1] {
 			return false
 		}
-		if spline.knots[kc - 1 - i] != spline.knots[kc - 1 - 2] {
+		if spline.knots[kc - 1 - i] != spline.knots[kc - i - 2] {
 			return false
 		}
 
@@ -117,8 +117,8 @@ is_open :: proc(spline: ^BSpline_2D) -> bool {
 	return true
 }
 //Returns the derivative of this B-spline, which is another B-spline
-take_derivative :: proc(spline: ^BSpline_2D) -> BSpline_2D {
-	d_knots := make([]f32, len(spline.knots) - 2)
+differentiate :: proc(spline: ^BSpline_2D) -> BSpline_2D {
+	d_knots := make([]f32, len(spline.knots))
 	for i := 0; i < len(d_knots); i += 1 {
 		d_knots[i] = spline.knots[i + 1]
 	}
@@ -142,7 +142,7 @@ eval_de_boor :: proc(spline: ^BSpline_2D, k: int, u: f32) -> Vector2 {
 		_eval_buf = make([]Vector2, degree + 1)
 	}
 	//pre-populate
-	for i := 0; i < degree; i += 1 {
+	for i := 0; i < degree + 1; i += 1 {
 		_eval_buf[i] = points[i + k - degree]
 	}
 	//recurse layers
@@ -158,7 +158,7 @@ eval_de_boor :: proc(spline: ^BSpline_2D, k: int, u: f32) -> Vector2 {
 //t:along segment length
 get_seg_point :: proc(spline: ^BSpline_2D, seg: int, t: f32) -> Vector2 {
 	using spline
-	if seg < 0 || seg > segment_count(spline) {
+	if seg < 0 || seg >= segment_count(spline) {
 		fmt.println(
 			"B-Spline segment index %d is out of range. Valid indices: 0 to %d",
 			seg,
@@ -222,9 +222,7 @@ eval_basis :: proc(spline: ^BSpline_2D, p: int, k: int, u: f32) -> f32 {
 eval_basis_w :: proc(spline: ^BSpline_2D, i: int, k: int, t: f32) -> f32 {
 	using spline
 	den := knots[i + k] - knots[i]
-	if den == 0 {
-		return 0
-	}
+	if den == 0 {return 0}
 	return (t - knots[i]) / den
 }
 //Returns the basis curve of a given point (by index), at the given parameter space u-value

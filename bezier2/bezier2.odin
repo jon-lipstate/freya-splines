@@ -8,7 +8,7 @@ import spline_utils "../spline_utils"
 /////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 lerp :: la.lerp
 lerp_inv :: la.unlerp
-Vector2 :: la.Vector2f32
+Vector2 :: [2]f32
 /////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 Bezier_2D :: struct {
 	control_points: []Vector2,
@@ -68,4 +68,21 @@ get_point_weight :: proc(bezier_2d: ^Bezier_2D, index: uint, t: f32) -> f32 {
 	degree := len(bezier_2d.control_points) - 1
 	weight := spline_utils.sample_basis_fn(uint(degree), index, t)
 	return weight
+}
+
+differentiate :: proc(bezier: ^Bezier_2D) -> Bezier_2D {
+	n := len(bezier.control_points) - 1
+	if n == 0 {
+		// no derivative
+		return Bezier_2D{}
+	}
+
+	d := len(bezier.control_points) - 1
+	delta_points := make([]Vector2, n)
+
+	for i := 0; i < n; i += 1 {
+		delta_points[i] = f32(d) * (bezier.control_points[i + 1] - bezier.control_points[i])
+	}
+
+	return bezier_2d(delta_points)
 }
